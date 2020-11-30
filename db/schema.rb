@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_105322) do
+ActiveRecord::Schema.define(version: 2020_11_30_111431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,14 +36,13 @@ ActiveRecord::Schema.define(version: 2020_11_30_105322) do
     t.index ["course_id"], name: "index_course_categories_on_course_id"
   end
 
-  create_table "course_sessions", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "course_teachers", force: :cascade do |t|
+    t.bigint "course_id"
+    t.bigint "teacher_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_course_teachers_on_course_id"
+    t.index ["teacher_id"], name: "index_course_teachers_on_teacher_id"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -52,9 +51,24 @@ ActiveRecord::Schema.define(version: 2020_11_30_105322) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "student_sessions", force: :cascade do |t|
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "course_teacher_id"
+    t.bigint "classroom_id"
+    t.datetime "date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["classroom_id"], name: "index_sessions_on_classroom_id"
+    t.index ["course_teacher_id"], name: "index_sessions_on_course_teacher_id"
+  end
+
+  create_table "student_sessions", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "session_id"
+    t.integer "result"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["session_id"], name: "index_student_sessions_on_session_id"
+    t.index ["student_id"], name: "index_student_sessions_on_student_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -75,4 +89,8 @@ ActiveRecord::Schema.define(version: 2020_11_30_105322) do
 
   add_foreign_key "course_categories", "categories"
   add_foreign_key "course_categories", "courses"
+  add_foreign_key "course_teachers", "courses"
+  add_foreign_key "sessions", "classrooms"
+  add_foreign_key "sessions", "course_teachers"
+  add_foreign_key "student_sessions", "sessions"
 end
