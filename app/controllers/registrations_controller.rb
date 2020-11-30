@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-
+  
   def create
     build_resource(sign_up_params)
     resource.save
@@ -8,3 +8,4 @@ class RegistrationsController < Devise::RegistrationsController
     render_jsonapi_response(resource)
   end
 end
+
