@@ -1,5 +1,7 @@
 class Api::Admin::UsersController < Api::BaseController
   before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authenticate_user!, only: [:edit, :destroy, :create, :new]
+
 
   # GET /users
   def index
