@@ -14,7 +14,7 @@ class Api::Student::StudentsessionsController < ApplicationController
 
   # GET /studentsessions
   def index
-    @studentsessions = Studentsession.all
+    @studentsessions = StudentSession.all
 
     render json: @studentsessions
   end
@@ -26,10 +26,10 @@ class Api::Student::StudentsessionsController < ApplicationController
 
   # POST /studentsessions
   def create
-    @studentsession = Studentsession.new(studentsession_params)
+    @studentsession = StudentSession.new(studentsession_params)
 
     if @studentsession.save
-      render json: @studentsession, status: :created, location: @studentsession
+      render json: @studentsession, status: :created
     else
       render json: @studentsession.errors, status: :unprocessable_entity
     end
@@ -52,7 +52,7 @@ class Api::Student::StudentsessionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_studentsession
-      @studentsession = Studentsession.find(params[:id])
+      @studentsession = StudentSession.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

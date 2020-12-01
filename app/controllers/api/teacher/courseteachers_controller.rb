@@ -26,7 +26,7 @@ class Api::Teacher::CourseteachersController < ApplicationController
 
   # POST /courseteachers
   def create
-    @courseteacher = Courseteacher.new(courseteacher_params)
+    @courseteacher = CourseTeacher.new(courseteacher_params)
 
     if @courseteacher.save
       render json: @courseteacher, status: :created
@@ -52,7 +52,7 @@ class Api::Teacher::CourseteachersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_courseteacher
-      @courseteacher = Courseteacher.find(params[:id])
+      @courseteacher = CourseTeacher.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
