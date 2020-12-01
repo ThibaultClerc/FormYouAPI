@@ -4,7 +4,7 @@ class Api::Admin::CategoriesController < ApplicationController
   before_action :authenticate_admin, only: [:show, :index, :edit, :destroy, :create, :new, :update]
 
   def authenticate_admin
-    if current_user.user_category == "admin"
+    if current_user.user_category == "admin" && is_validated == true
         puts 'yeah'
       else
         redirect_to root_path

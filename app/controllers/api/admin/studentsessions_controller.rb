@@ -4,7 +4,7 @@ class Api::Admin::StudentsessionsController < ApplicationController
     before_action :authenticate_admin, only: [:show, :index, :edit, :destroy, :create, :new, :update]
 
     def authenticate_admin
-      if current_user.admin?
+      if current_user.admin? && is_validated == true
           puts 'yeah'
         else
           redirect_to root_path

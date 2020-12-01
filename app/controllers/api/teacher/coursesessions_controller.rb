@@ -4,7 +4,7 @@ class Api::Teacher::CoursesessionsController < ApplicationController
   before_action :authenticate_teacher, only: [:index, :show, :destroy, :create, :new, :update]
 
   def authenticate_teacher
-    if current_user.teacher?
+    if current_user.teacher? && is_validated == true
         puts 'yeah'
       else
         redirect_to root_path
@@ -27,7 +27,7 @@ class Api::Teacher::CoursesessionsController < ApplicationController
     @session = Session.new(session_params)
 
     if @session.save
-      render json: @session, status: :created, location: @session
+      render json: @session, status: :created
     else
       render json: @session.errors, status: :unprocessable_entity
     end
@@ -55,6 +55,6 @@ class Api::Teacher::CoursesessionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def session_params
-      params.require(:session).permit(:classroom_id, :date, :teacher_id)
+      params.require(:session).permit(:classroom_id, :date).merge({course_teacher_id: params[:courseteacher_id]})
     end
 end

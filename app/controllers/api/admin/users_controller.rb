@@ -5,7 +5,7 @@ class Api::Admin::UsersController < Api::BaseController
 
 
   def authenticate_admin
-    if current_user.user_category == "admin"
+    if current_user.user_category == "admin" && is_validated == true
         puts 'yeah'
       else
         redirect_to root_path

@@ -5,7 +5,7 @@ class Api::Student::StudentsessionsController < ApplicationController
 
 
     def authenticate_student
-      if current_user.student?
+      if current_user.student? && is_validated == true
           puts 'yeah'
         else
           redirect_to root_path
@@ -57,6 +57,6 @@ class Api::Student::StudentsessionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def studentsession_params
-      params.require(:student_session).permit(:student_id, :session_id)
+      params.require(:student_session).permit(:student_id, :session_id).merge({student_id: current_user.id})
     end
 end
