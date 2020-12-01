@@ -57,6 +57,6 @@ class Api::Admin::CoursesessionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def session_params
-      params.require(:session).permit(:classroom_id, :date, :teacher_id)
+      params.require(:session).permit(:classroom_id, :date, :course_teacher_id)
     end
 end

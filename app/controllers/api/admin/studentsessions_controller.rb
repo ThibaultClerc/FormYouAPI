@@ -3,7 +3,6 @@ class Api::Admin::StudentsessionsController < ApplicationController
     # before_action :authenticate_user!, only: [:edit, :destroy, :create, :new]
     before_action :authenticate_admin, only: [:show, :index, :edit, :destroy, :create, :new, :update]
 
-
     def authenticate_admin
       if current_user.admin?
           puts 'yeah'
@@ -14,7 +13,7 @@ class Api::Admin::StudentsessionsController < ApplicationController
 
   # GET /studentsessions
   def index
-    @studentsessions = Studentsession.all
+    @studentsessions = StudentSession.all
 
     render json: @studentsessions
   end
@@ -26,10 +25,10 @@ class Api::Admin::StudentsessionsController < ApplicationController
 
   # POST /studentsessions
   def create
-    @studentsession = Studentsession.new(studentsession_params)
+    @studentsession = StudentSession.new(studentsession_params)
 
     if @studentsession.save
-      render json: @studentsession, status: :created, location: @studentsession
+      render json: @studentsession, status: :created
     else
       render json: @studentsession.errors, status: :unprocessable_entity
     end
@@ -52,11 +51,11 @@ class Api::Admin::StudentsessionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_studentsession
-      @studentsession = Studentsession.find(params[:id])
+      @studentsession = StudentSession.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def studentsession_params
-      params.require(:student_session).permit(:student_id, :session_id)
+      params.require(:student_session).permit(:student_id, :session_id, :result)
     end
 end

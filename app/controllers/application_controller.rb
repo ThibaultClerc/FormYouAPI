@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :user_category])
 
-    if current_user.present? && current_user.admin?
+    if current_user.present? && current_user.admin? && current_user.is_validated == true
       devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :user_category, :is_validated])
     else
       devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :user_category])

@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     namespace :admin do
       resources :users
       resources :categories
-      resources :courseessions
+      resources :coursesessions
       resources :courses
       resources :classrooms
       resources :courseteachers
