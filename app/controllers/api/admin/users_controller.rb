@@ -1,5 +1,17 @@
 class Api::Admin::UsersController < Api::BaseController
   before_action :set_user, only: [:show, :update, :destroy]
+  # before_action :authenticate_user!, only: [:edit, :destroy, :create, :new]
+  before_action :authenticate_admin, only: [:show, :index, :edit, :destroy, :create, :new, :update]
+
+
+  def authenticate_admin
+    if current_user.user_category == "admin"
+        puts 'yeah'
+      else
+        redirect_to root_path
+    end
+  end
+
 
   # GET /users
   def index
@@ -18,7 +30,7 @@ class Api::Admin::UsersController < Api::BaseController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: @user, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
