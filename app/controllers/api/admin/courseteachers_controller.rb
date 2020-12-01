@@ -5,7 +5,7 @@ class Api::Admin::CourseteachersController < ApplicationController
 
 
   def authenticate_admin
-    if current_user.admin?
+    if current_user.admin? && is_validated == true
         puts 'yeah'
       else
         redirect_to root_path

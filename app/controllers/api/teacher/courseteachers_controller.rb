@@ -5,7 +5,7 @@ class Api::Teacher::CourseteachersController < ApplicationController
 
 
   def authenticate_teacher
-    if current_user.teacher?
+    if current_user.teacher? && is_validated == true
         puts 'yeah'
       else
         redirect_to root_path
@@ -26,13 +26,13 @@ class Api::Teacher::CourseteachersController < ApplicationController
 
   # POST /courseteachers
   def create
-    @courseteacher = CourseTeacher.new(courseteacher_params)
+      @courseteacher = CourseTeacher.new(courseteacher_params)
 
-    if @courseteacher.save
-      render json: @courseteacher, status: :created
-    else
-      render json: @courseteacher.errors, status: :unprocessable_entity
-    end
+        if @courseteacher.save 
+          render json: @courseteacher, status: :created
+        else
+          render json: @courseteacher.errors, status: :unprocessable_entity
+        end
   end
 
   # PATCH/PUT /courseteachers/1
@@ -57,6 +57,6 @@ class Api::Teacher::CourseteachersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def courseteacher_params
-      params.require(:course_teacher).permit(:course_id, :teacher_id)
+      params.require(:course_teacher).permit(:course_id).merge({teacher_id: current_user.id})    
     end
 end
