@@ -1,23 +1,24 @@
 Rails.application.routes.draw do
   default_url_options :host => "http://localhost:3000"
 
-  root to: 'sessions#index'
+  root to: 'coursesessions#index'
 
   namespace :api, defaults: { format: :json } do
     resources :users
 
     resources :courses, only: [:index, :show] do
-      resources :sessions
+      resources :coursesessions
     end
     
-    resources :sessions
-    resources :categories, only: [:index]
-    resources :classrooms, only: [:index]
+    resources :coursessessions
+    resources :categories, only: [:index, :show]
+    resources :courses, only: [:index, :show]
+    resources :classrooms, only: [:index, :show]
 
     namespace :admin do
       resources :users
       resources :categories
-      resources :sessions
+      resources :coursesessions
       resources :courses
       resources :classrooms
       end
