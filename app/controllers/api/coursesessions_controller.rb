@@ -1,16 +1,6 @@
 class Api::CoursesessionsController < ApplicationController
   before_action :set_coursesession, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:index, :show]
-  before_action :authenticate_teacher, only: [:index, :show, :destroy, :create, :new, :update]
-
-
-  def authenticate_teacher
-    if current_user.user_category == "teacher"
-        puts 'yeah'
-      else
-        redirect_to root_path
-    end
-  end
 
   # GET /sessions
   def index
@@ -22,31 +12,6 @@ class Api::CoursesessionsController < ApplicationController
   # GET /sessions/1
   def show
     render json: @session
-  end
-
-  # POST /sessions
-  def create
-    @session = Session.new(session_params)
-
-    if @session.save
-      render json: @session, status: :created, location: @session
-    else
-      render json: @session.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /sessions/1
-  def update
-    if @session.update(session_params)
-      render json: @session
-    else
-      render json: @session.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /sessions/1
-  def destroy
-    @session.destroy
   end
 
   private

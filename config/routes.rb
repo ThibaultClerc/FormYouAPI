@@ -5,22 +5,29 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :users
-
-    resources :courses, only: [:index, :show] do
-      resources :coursesessions
-    end
-    
-    resources :coursessessions
     resources :categories, only: [:index, :show]
     resources :courses, only: [:index, :show]
     resources :classrooms, only: [:index, :show]
+    resources :coursesessions, only: [:index, :show]
+
+    namespace :teacher do
+      resources :courseteachers do
+        resources :coursesessions 
+      end
+    end
+
+    namespace :student do
+      resources :studentsessions 
+    end
 
     namespace :admin do
       resources :users
       resources :categories
-      resources :coursesessions
+      resources :courseessions
       resources :courses
       resources :classrooms
+      resources :courseteachers
+      resources :studentsessions
       end
     
   end
