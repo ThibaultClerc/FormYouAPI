@@ -16,12 +16,12 @@ class Api::Admin::CoursesessionsController < ApplicationController
   def index
     @sessions = Session.all
 
-    render json: @sessions
+    render jsonapi: @sessions
   end
 
   # GET /sessions/1
   def show
-    render json: @session
+    render jsonapi: @session
   end
 
   # POST /sessions

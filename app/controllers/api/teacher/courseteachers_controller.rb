@@ -16,12 +16,16 @@ class Api::Teacher::CourseteachersController < ApplicationController
   def index
     @courseteachers = current_user.course_teachers
 
-    render json: @courseteachers
+    render  jsonapi: @courseteachers, 
+            include: 'sessions' 
+
   end
 
   # GET /courseteachers/1
   def show
-    render json: @courseteacher
+    render  jsonapi: @courseteacher,
+            include: 'sessions' 
+
   end
 
   # POST /courseteachers
