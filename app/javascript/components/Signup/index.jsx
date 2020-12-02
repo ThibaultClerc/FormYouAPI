@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../store/actions/index';
+import Cookies from "js-cookie";
 
 
 const Signup = () => {
@@ -32,9 +33,11 @@ const Signup = () => {
       },
       "body": JSON.stringify(data)
     })
-    .then((response) => response.json())
     .then((response) => {
-      console.log(response.data.attributes)
+      Cookies.set('token', response.headers.get("Authorization"))
+      return response.json()
+    })
+    .then((response) => {
       dispatch(loginUser(response.data.attributes))
       setRedirection(true)
     }).catch(error => {
