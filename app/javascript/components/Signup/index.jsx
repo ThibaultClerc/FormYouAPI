@@ -1,73 +1,81 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import { Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../store/actions/index';
+
 
 const Signup = () => {
-  const [user_category, setUser_category] = useState(1);
+  const [userCategory, setUserCategory] = useState(1);
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [redirection, setRedirection] = useState(false)
   const [email, setEmail] = useState('');
 
+  const dispatch = useDispatch();
+
   const data = {
-    email: email,
-    password: password,
-    user_category: 1
+    user: {
+      email: email,
+      password: password,
+      user_category: parseInt(userCategory)
+    }
   };
 
-  const handleCategoryChange = (e) => {
-    console.log(e.target.value);
-    setUser_category(e.target.value);
-  }
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  }
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  }
-
-  const handleClick = (e) => {
-    fetch('/api/signup', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    fetch("api/signup", {
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(data)
+      "body": JSON.stringify(data)
     })
     .then((response) => response.json())
-    .then(response => {
-      console.log(response.jwt);
-      console.log("request sent");
-
+    .then((response) => {
+      console.log(response.data.attributes)
+      dispatch(loginUser(response.data.attributes))
+      setRedirection(true)
+    }).catch(error => {
+      console.log(error)
     })
-    .catch((error) => console.error(error));
-  }
+  };
 
 
   return (
-    <div className="register text-center">
-      <h1>Inscription</h1>;
-      <br/><br/>
-      <label>
-          Choisissez votre catégorie:
-          <select  >
-            <option value="student">Elève</option>
-            <option value="teacher">Professeur</option>
-          </select>
-        </label>
-      <br/><br/>
-      <h3> Email : </h3>
-      <br/>
-      <input type="text" onChange={handleEmailChange}/>
-      <br/><br/>
-      <h3> Mot de passe : </h3>
-      <br/>
-      <input type="password" onChange={handlePasswordChange}/>
-      <br/><br/>
-      <h3> Confirmer le mot de passe : </h3>
-      <br/>
-      <input type="password"/>
-      <br/><br/>
-      <button type="button" className="btn btn-success" onClick={handleClick}> S'inscrire </button>
-    </div>
+    <>
+      {redirection && <Redirect to='/'/>}
+      <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="email">
+          <Form.Label>Sélectionnez votre rôle</Form.Label>
+          <Form.Control as="select" value={userCategory} onChange={e => setUserCategory(e.target.value)}>
+            <option value="0">Elève</option>
+            <option value="1">Professeur</option>
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)}/>
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Label>Mot de passe</Form.Label>
+          <Form.Control type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)}/>
+        </Form.Group>
+        <Form.Group controlId="passwordConfirm">
+          <Form.Label>Confirmer le mot de passe</Form.Label>
+          <Form.Control type="password" placeholder="Confirmer le mot de passe" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)}/>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          S'inscrire
+        </Button>
+      </Form>
+    </>
+
   );
 }
+
 export default Signup
