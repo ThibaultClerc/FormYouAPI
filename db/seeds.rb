@@ -1,7 +1,7 @@
 require 'faker'
 Faker::Config.locale = 'fr'
 
-5.times do |i|
+8.times do |i|
   User.create!(
     email: Faker::Internet.email,
     first_name: Faker::Name.first_name,
@@ -9,17 +9,20 @@ Faker::Config.locale = 'fr'
     password: 'azerty',
     user_category: 1,
     is_validated: [true, false].sample
+  )  
+end
+
+teacher_array = User.where(user_category: :teacher, is_validated: :true)
+
+
+10.times do |j|
+  Course.create!(
+    title: Faker::Educator.unique.course_name
   )
-  2.times do |j|
-    Course.create!(
-      title: Faker::Educator.unique.course_name
-    )
-    CourseTeacher.create!(
-      teacher_id: i + 1,
-      course_id: j + 1
-    )
-  end
-  
+  CourseTeacher.create!(
+    teacher_id: teacher_array.find(rand(teacher_array.first.id..teacher_array.last.id)).id,
+    course_id: Course.find(rand(Course.first.id..Course.last.id)).id
+  )
 end
 
 puts "#{User.where(user_category: 1).all.count} profs créés"
@@ -38,6 +41,9 @@ puts "#{CourseTeacher.all.count} associations profs/cours créés"
 end
 
 puts "#{User.where(user_category: 0).all.count} élèves créés"
+
+student_array = User.where(user_category: :student, is_validated: :true)
+
 
 User.create!(
   email: Faker::Internet.email,
@@ -90,7 +96,7 @@ puts "#{Session.all.count} sessions créées"
 40.times do |i|
   StudentSession.create!(
     result: rand(0..20),
-    student_id: rand(1..10),
+    student_id: User.find(rand(student_array.first.id..student_array.last.id)).id,
     session_id: rand(1..20)
   )
 end 

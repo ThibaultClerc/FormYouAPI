@@ -3,7 +3,8 @@ class SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
-    render_jsonapi_response(resource)
+    puts current_user.user_category
+    render  jsonapi: resource
   end
 
   def respond_to_on_destroy

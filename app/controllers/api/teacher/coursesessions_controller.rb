@@ -14,12 +14,12 @@ class Api::Teacher::CoursesessionsController < ApplicationController
   # GET /sessions
   def index
     @sessions = current_user.course_teachers.find(params[:courseteacher_id]).sessions
-    render json: @sessions
+    render jsonapi: @sessions
   end
 
   # GET /sessions/1
   def show
-    render json: @session
+    render jsonapi: @session
   end
 
   # POST /sessions
