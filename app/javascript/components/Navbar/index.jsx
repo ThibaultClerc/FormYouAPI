@@ -19,7 +19,7 @@ const Navbar = () => {
             <Link to="#" className="nav-item nav-link">About</Link>
           </div>
           <div className="Connection">
-          {user.length !== 0 ? <Link to="#" className="navbar-brand">Mon Profil</Link> : ''}
+          {user.length !== 0 ? <Link to="/profil" className="navbar-brand">Mon Profil</Link> : ''}
           {user.length !== 0 ? <Link to="/" className="btn btn-danger" onClick={(e) => {Cookies.remove('token'); window.location.reload();}}>Se déconnecter</Link> : ''}    
           {user.length === 0 ? <Link to="/signup" className="btn btn-secondary mr-1">S'inscrire</Link> : ''}
           {user.length === 0 ? <Link to="/login" className="btn btn-primary">Se connecter</Link> : ''}
