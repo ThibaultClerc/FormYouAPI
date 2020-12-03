@@ -1,13 +1,14 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux';
+import { isAdmin } from '../../utils/usertype'
 
-  const PrivateRoute = ({component: Component, ...rest}) => {
+  const AdminRoute = ({component: Component, ...rest}) => {
 
     const user = useSelector(state => state.user);
 
     const isLogin = () => {
-      if (!Array.isArray(user) && user.is_validated) {
+      if (isAdmin(user)) {
         return true
       } else {
         return false
@@ -23,4 +24,4 @@ import { useSelector } from 'react-redux';
     );
 };
 
-export default PrivateRoute
+export default AdminRoute
