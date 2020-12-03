@@ -1,8 +1,9 @@
 import React from 'react'
+import FormYouCalendar from '../Calendar'
 
 const Home = () => {
     return (
-        <div>Hello from Home page</div>
+        <FormYouCalendar/>
     )
 }
 

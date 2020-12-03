@@ -5,7 +5,7 @@ class SessionsController < Devise::SessionsController
   def respond_with(resource, _opts = {})
     puts current_user.user_category
     render  jsonapi: resource,
-            fields: { users: [:first_name, :last_name, :email] }
+            fields: { users: [:id, :is_validated, :email, :user_category] }
 
     
   end
