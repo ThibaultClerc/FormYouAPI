@@ -1,6 +1,6 @@
 class Api::CoursesessionsController < ApplicationController
   before_action :set_coursesession, only: [:show, :update, :destroy]
-  before_action :authenticate_user!, only: [:index, :show]
+  # before_action :authenticate_user!, only: [:index, :show]
 
   # GET /sessions
   def index

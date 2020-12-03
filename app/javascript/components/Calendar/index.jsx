@@ -1,23 +1,52 @@
 import { Calendar, Alert , Badge} from 'antd';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import GetListData from '../ListData'
 import moment from 'moment'
 import 'antd/dist/antd.css'
 import './calendar.css'
+import Cookies from 'js-cookie'
 
-const FormYouCalendar = () => {
+
+const FormYouCalendar = ({url}) => {
   const today = moment().format('YYYY-MM-DD');
   const [selectedDate, setSelectedDate] = useState({
     value: moment(today),
     selectedValue: moment(today),
     }
   );
+  const [data, setData] = useState([]);
 
-  const user  = useSelector(state => state.user);
+  const fetchData = () => {
+    fetch(`${url}`, {
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": Cookies.get("token")
+      },
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      setData(response.data)
+    }).catch(error => {
+      console.log(error)
+    })
+  };
 
-  function dateCellRender(value) {
-    const listData = GetListData(value);
+  useEffect(() => {
+    fetchData()
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  const dateCellRender = (value) =>{
+    if (data.length === 0){
+      return null
+    }
+    const listData = GetListData(value, data);
     return (
       <ul className="events">
         {listData.map(item => (
@@ -29,13 +58,13 @@ const FormYouCalendar = () => {
     );
   }
   
-  function getMonthData(value) {
+  const  getMonthData = (value)=> {
     if (value.month() === 8) {
       return 1394;
     }
   }
   
-  function monthCellRender(value) {
+  const monthCellRender = (value) => {
     const num = getMonthData(value);
     return num ? (
       <div className="notes-month">
