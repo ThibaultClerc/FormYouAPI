@@ -5,7 +5,7 @@ import moment from 'moment'
 import 'antd/dist/antd.css'
 import './calendar.css'
 import Cookies from 'js-cookie'
-
+import { ModalSession } from '../Modal'
 
 const FormYouCalendar = ({url}) => {
   const today = moment().format('YYYY-MM-DD');
@@ -15,6 +15,11 @@ const FormYouCalendar = ({url}) => {
     }
   );
   const [data, setData] = useState([]);
+  const [visibleModal, setVisibleModal] = useState(null);
+
+  const handleModalChange = (value) =>{
+    setVisibleModal(value)
+  };
 
   const fetchData = () => {
     fetch(`${url}`, {
@@ -40,7 +45,9 @@ const FormYouCalendar = ({url}) => {
 
   useEffect(() => {
     console.log(data);
+    console.log(visibleModal)
   }, [data]);
+
 
   const dateCellRender = (value) =>{
     if (data.length === 0){
@@ -87,13 +94,20 @@ const FormYouCalendar = ({url}) => {
       selectedValue: value
     });
   };
+  
+  const modalSession = () => {
+    console.log(selectedDate),
+    setVisibleModal(true)
+  }
+
 
   return (    
     <>
+        {visibleModal && (<ModalSession value={visibleModal} visibleModal={(()=>handleModalChange(false))}/>)}
         <Alert
           message={`You selected date: ${selectedDate.selectedValue && selectedDate.selectedValue.format('YYYY-MM-DD')}`}
         />
-        <Calendar value={selectedDate.value} onSelect={onSelect} onPanelChange={onPanelChange} dateCellRender={dateCellRender} monthCellRender={monthCellRender}/>
+        <Calendar value={selectedDate.value} onSelect={onSelect, ()=>modalSession()} onPanelChange={onPanelChange} dateCellRender={dateCellRender} monthCellRender={monthCellRender}/>
     </>
     )
 };
