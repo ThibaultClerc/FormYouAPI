@@ -6,6 +6,6 @@ class SerializableCourseTeacher < JSONAPI::Serializable::Resource
     {title:  @object.course.title} 
   end
 
-  attributes :sessions
+  attributes :sessions, :teacher_id
   
 end
