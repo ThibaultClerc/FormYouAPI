@@ -1,13 +1,18 @@
 import { Calendar, Alert , Badge} from 'antd';
 import React, { useState, useEffect } from 'react';
 import GetListData from '../ListData'
+import GetListDataTeacher from '../ListDataTeacher'
+import { useSelector } from 'react-redux';
+
 import moment from 'moment'
 import 'antd/dist/antd.css'
 import './calendar.css'
 import Cookies from 'js-cookie'
+import userConnect from '../../store/reducers/user';
 
 
 const FormYouCalendar = ({url}) => {
+  const user = useSelector(state => state.user);
   const today = moment().format('YYYY-MM-DD');
   const [selectedDate, setSelectedDate] = useState({
     value: moment(today),
@@ -29,6 +34,7 @@ const FormYouCalendar = ({url}) => {
     })
     .then((response) => {
       setData(response.data)
+      console.log(response.data)
     }).catch(error => {
       console.log(error)
     })
@@ -46,7 +52,13 @@ const FormYouCalendar = ({url}) => {
     if (data.length === 0){
       return null
     }
-    const listData = GetListData(value, data);
+    let listData
+    if(user.user_category === "teacher") {
+       listData = GetListDataTeacher(value, data);
+    } else {
+       listData = GetListData(value, data);
+    }
+
     return (
       <ul className="events">
         {listData.map(item => (

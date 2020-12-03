@@ -6,7 +6,8 @@ const GetListData = (value, data) => {
   const ArrayData = data
   ArrayData.forEach(e=>{
     const date = moment(moment(e.meta.date).format('YYYY-MM-DD'));
-    if (value.date() == date.date()){
+    let dateDiff = date.diff(value)
+    if (dateDiff === 0 ){
     listData = [
       { type: 'success', content: e.meta.course},
     ]
