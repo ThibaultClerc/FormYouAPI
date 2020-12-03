@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../store/actions/index';
 import Cookies from "js-cookie";
 
-
 const Signup = () => {
   const [userCategory, setUserCategory] = useState(1);
   const [password, setPassword] = useState('');
