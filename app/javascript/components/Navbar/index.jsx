@@ -1,9 +1,14 @@
 import {Link} from "react-router-dom";
 import React from 'react'
 import Cookies from 'js-cookie'
+import { useSelector } from 'react-redux';
+import {loginUser} from '.../../store/actions';
+
 
 const Navbar = () => {
 
+    const user = useSelector(state => state.user);
+  
     return (
 
       <nav className="navbar navbar-expand-lg navbar-light bg-light ">
@@ -14,10 +19,11 @@ const Navbar = () => {
             <Link to="#" className="nav-item nav-link">About</Link>
           </div>
           <div className="Connection">
-             <Link to="#" className="navbar-brand">Mon Profil</Link>
-             <Link to="/" className="btn btn-danger" onClick={(e) => {Cookies.remove('token'); window.location.reload();}}>Se déconnecter</Link>
-             <Link to="/signup" className="btn btn-secondary mr-1">S'inscrire</Link>
-             <Link to="#" className="btn btn-primary">Se connecter</Link>
+          {user.length !== 0 ? <Link to="#" className="navbar-brand">Mon Profil</Link> : ''}
+          {user.length !== 0 ? <Link to="/" className="btn btn-danger" onClick={(e) => {Cookies.remove('token'); window.location.reload();}}>Se déconnecter</Link> : ''}    
+          {user.length === 0 ? <Link to="/signup" className="btn btn-secondary mr-1">S'inscrire</Link> : ''}
+          {user.length === 0 ? <Link to="/login" className="btn btn-primary">Se connecter</Link> : ''}
+
           </div>
         </div>
       </nav>

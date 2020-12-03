@@ -6,6 +6,7 @@ import { store } from '../store/store'
 import Navbar from './Navbar'
 import Home from './Home'
 import Signup from './Signup'
+import Login from './Login'
 
 
 const App = () => {
@@ -15,7 +16,7 @@ const App = () => {
             <Switch> 
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/signup" component={Signup}/>
-                {/* <Route exact path="/login" component={Login}></Route> */}
+                <Route exact path="/login" component={Login}/>
             </Switch>
         </Provider>
     )
