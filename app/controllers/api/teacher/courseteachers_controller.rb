@@ -16,8 +16,7 @@ class Api::Teacher::CourseteachersController < ApplicationController
   def index
     @courseteachers = current_user.course_teachers
 
-    render  jsonapi: @courseteachers, 
-            include: 'sessions' 
+    render  jsonapi: @courseteachers
 
   end
 

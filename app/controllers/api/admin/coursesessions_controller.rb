@@ -5,6 +5,10 @@ class Api::Admin::CoursesessionsController < ApplicationController
 
 
   def authenticate_admin
+    puts "hello"
+    puts current_user
+    puts "hello"
+
     if current_user.admin? && current_user.is_validated == true
         puts 'yeah'
       else

@@ -3,11 +3,9 @@ class SerializableCourseTeacher < JSONAPI::Serializable::Resource
   type 'course_teacher'
 
   attribute :course do 
-    {
-      title:  @object.course.title
-    }
+    {title:  @object.course.title} 
   end
 
-  has_many :sessions
+  attributes :sessions
   
 end
