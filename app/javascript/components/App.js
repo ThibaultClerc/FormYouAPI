@@ -8,6 +8,7 @@ import Navbar from './Navbar'
 import Home from './Home'
 import Signup from './Signup'
 import Login from './Login'
+import Profil from './Profil'
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/signup" component={Signup}/>
                 <Route exact path="/login" component={Login}/>
+                <Route exact path="/profil" component={Profil}/>
             </Switch>
         </Provider>
     )
