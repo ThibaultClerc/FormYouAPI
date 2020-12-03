@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import { store } from '../store/store'
 
+import AdminRoute from '../components/PrivateRoute'
 import Navbar from './Navbar'
 import Home from './Home'
 import Signup from './Signup'
