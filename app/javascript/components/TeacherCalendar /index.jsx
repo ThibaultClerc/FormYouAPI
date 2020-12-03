@@ -6,7 +6,7 @@ import moment from 'moment'
 import 'antd/dist/antd.css'
 import './calendar.css'
 
-const FormYouCalendar = () => {
+const FormYouTeacherCalendar = () => {
   const today = moment().format('YYYY-MM-DD');
   const [selectedDate, setSelectedDate] = useState({
     value: moment(today),
@@ -14,10 +14,39 @@ const FormYouCalendar = () => {
     }
   );
 
-  const user  = useSelector(state => state.user);
+  const user = useSelector(state => state.user);
+  const [sessions, setSessions] = useState([]);
+
+  const fetchCourseTeacher = () => {
+    fetch(`api/teacher/courseteachers`, {
+      method: 'get',
+      headers: {
+        'Authorization': `${Cookies.get('token')}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      response.forEach(data => {
+        setSessions(...sessions, data.attributes)
+    })
+    }).catch(error => {
+      console.log(error)
+    })
+  };
+
+  useEffect(() => {
+    fetchCourseTeacher()
+  }, []);
+
+  useEffect(() => {
+    console.log(sessions);
+  }, [sessions]);
 
   function dateCellRender(value) {
-    const listData = GetListData(value);
+    const listData = GetListData(value, sessions);
     return (
       <ul className="events">
         {listData.map(item => (
@@ -69,4 +98,4 @@ const FormYouCalendar = () => {
     )
 };
 
-export default FormYouCalendar;
+export default FormYouTeacherCalendar;
