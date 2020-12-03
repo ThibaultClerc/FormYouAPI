@@ -42,6 +42,7 @@ const Connection = () => {
       return response.json()
     })
     .then((response) => {
+      console.log(response.data.attributes)
       dispatch(loginUser(response.data.attributes))
       setRedirection(true)
     }).catch(error => {
