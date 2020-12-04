@@ -99,6 +99,7 @@ const FormYouCalendar = ({url}) => {
       value,
       selectedValue: value
     });
+    modalSession()
   };
 
   const onPanelChange = value => {
@@ -109,18 +110,32 @@ const FormYouCalendar = ({url}) => {
   };
   
   const modalSession = () => {
-    console.log(selectedDate),
     setVisibleModal(true)
   }
+
+  const checkData = (value) =>{
+    const ArrayData = date()
+    return ArrayData.includes(value)
+  }
+
+  const date = ()=>{
+    const ArrayData = data
+    const ArrayDate = []
+    ArrayData.forEach(e=>{
+      const sessiondate = moment(e.meta.date).format('YYYY-MM-DD');
+      ArrayDate.push(sessiondate)
+    })
+    return ArrayDate
+  };
 
 
   return (    
     <>
-        {visibleModal && (<ModalSession value={visibleModal} visibleModal={(()=>handleModalChange(false))}/>)}
+        {(visibleModal && checkData(selectedDate.selectedValue.format('YYYY-MM-DD'))) && (<ModalSession value={visibleModal} visibleModal={(()=>handleModalChange(false))} data={data} dateSession={selectedDate.selectedValue.format('YYYY-MM-DD')}/>)}
         <Alert
           message={`You selected date: ${selectedDate.selectedValue && selectedDate.selectedValue.format('YYYY-MM-DD')}`}
         />
-        <Calendar value={selectedDate.value} onSelect={onSelect, ()=>modalSession()} onPanelChange={onPanelChange} dateCellRender={dateCellRender} monthCellRender={monthCellRender}/>
+        <Calendar value={selectedDate.value} onSelect={onSelect} onPanelChange={onPanelChange} dateCellRender={dateCellRender} monthCellRender={monthCellRender}/>
     </>
     )
 };
