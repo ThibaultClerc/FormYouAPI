@@ -8,6 +8,7 @@ import moment from 'moment'
 import 'antd/dist/antd.css'
 import './calendar.css'
 import Cookies from 'js-cookie'
+import { ModalSession } from '../Modal'
 import userConnect from '../../store/reducers/user';
 
 
@@ -20,6 +21,11 @@ const FormYouCalendar = ({url}) => {
     }
   );
   const [data, setData] = useState([]);
+  const [visibleModal, setVisibleModal] = useState(null);
+
+  const handleModalChange = (value) =>{
+    setVisibleModal(value)
+  };
 
   const fetchData = () => {
     fetch(`${url}`, {
@@ -46,7 +52,9 @@ const FormYouCalendar = ({url}) => {
 
   useEffect(() => {
     console.log(data);
+    console.log(visibleModal)
   }, [data]);
+
 
   const dateCellRender = (value) =>{
     if (data.length === 0){
@@ -54,9 +62,9 @@ const FormYouCalendar = ({url}) => {
     }
     let listData
     if(user.user_category === "teacher") {
-       listData = GetListDataTeacher(value, data);
-    } else {
-       listData = GetListData(value, data);
+      listData = GetListDataTeacher(value, data);
+  } else {
+      listData = GetListData(value, data);
     }
 
     return (
@@ -91,6 +99,7 @@ const FormYouCalendar = ({url}) => {
       value,
       selectedValue: value
     });
+    modalSession()
   };
 
   const onPanelChange = value => {
@@ -99,9 +108,30 @@ const FormYouCalendar = ({url}) => {
       selectedValue: value
     });
   };
+  
+  const modalSession = () => {
+    setVisibleModal(true)
+  }
+
+  const checkData = (value) =>{
+    const ArrayData = date()
+    return ArrayData.includes(value)
+  }
+
+  const date = ()=>{
+    const ArrayData = data
+    const ArrayDate = []
+    ArrayData.forEach(e=>{
+      const sessiondate = moment(e.meta.date).format('YYYY-MM-DD');
+      ArrayDate.push(sessiondate)
+    })
+    return ArrayDate
+  };
+
 
   return (    
     <>
+        {(visibleModal && checkData(selectedDate.selectedValue.format('YYYY-MM-DD'))) && (<ModalSession value={visibleModal} visibleModal={(()=>handleModalChange(false))} data={data} dateSession={selectedDate.selectedValue.format('YYYY-MM-DD')}/>)}
         <Alert
           message={`You selected date: ${selectedDate.selectedValue && selectedDate.selectedValue.format('YYYY-MM-DD')}`}
         />
